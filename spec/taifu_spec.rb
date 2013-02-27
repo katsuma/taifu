@@ -33,11 +33,11 @@ describe Taifu do
   end
 
   describe Taifu::App do
-    let(:taifu) { Taifu::App.any_instance }
 
     describe '.new' do
-      subject { Taifu::App.new(url) }
+      subject { Taifu::App.new }
 
+      let(:taifu) { Taifu::App.any_instance }
       let(:app) { 'youtube-dl' }
 
       context "if required app is not installed" do
@@ -65,5 +65,28 @@ describe Taifu do
       end
     end
 
+    describe '#save_as_wav_with' do
+      subject do
+        taifu = Taifu::App.new
+        taifu.save_as_wav_with(load_url)
+      end
+
+      let(:load_url) { "#{url}&fature=endscreen" }
+      let(:working_dir) { '/tmp/.taifu' }
+      let(:taifu) { Taifu::App.any_instance }
+
+      before do
+        taifu.should_receive(:installed?).exactly(2).times.and_return(true)
+        taifu.should_receive(:working_dir).at_least(:once).and_return(working_dir)
+      end
+
+      it 'saves file as wav' do
+        taifu.should_receive(:download_from).with(url)
+        taifu.should_receive(:convert_flv_to).with("#{working_dir}/taifu.wav")
+        taifu.should_receive(:remove_flv)
+        subject
+      end
+
+    end
   end
 end

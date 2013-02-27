@@ -11,7 +11,7 @@ module Taifu
       raise ArgumentError.new 'You need to specify URL. Try "taifu http://www.youtube.com/watch?v=I1X6MrBfjrk"'
     end
 
-    taifu = App.new(url)
+    taifu = App.new
     wav_path = taifu.save_as_wav_with(url)
     taifu.add_track(wav_path)
   end

@@ -3,7 +3,7 @@ module Taifu
   class App
     REQUIRED_APPS = %w(youtube-dl ffmpeg).freeze
 
-    def initialize(url)
+    def initialize
       init_working_dir if check_env
       @logger = Logger.new(STDOUT)
     end
@@ -50,11 +50,11 @@ module Taifu
       wav_path = "#{working_dir}/#{wav_file}"
 
       @logger.info 'Download data'
-      system "youtube-dl -q #{url} -o #{working_dir}/taifu.flv"
+      download_from url
 
       @logger.info 'Save wav file'
-      system "ffmpeg -i #{working_dir}/taifu.flv #{wav_path} 2>/dev/null"
-      system "rm -f #{working_dir}/taifu.flv"
+      convert_flv_to wav_path
+      remove_flv
 
       wav_path
     end
@@ -76,7 +76,7 @@ module Taifu
     private :check_env
 
     def installed?(app)
-      `which #{app}`.present?
+      !`which #{app}`.empty?
     end
     private :installed?
 
@@ -85,6 +85,21 @@ module Taifu
       File.join(home_dir, '.taifu')
     end
     private :working_dir
+
+    def download_from(url)
+      system "youtube-dl -q #{url} -o #{working_dir}/taifu.flv"
+    end
+    private :download_from
+
+    def convert_flv_to(wav)
+      system "ffmpeg -i #{working_dir}/taifu.flv #{wav} 2>/dev/null"
+    end
+    private :convert_flv_to
+
+    def remove_flv
+      system "rm -f #{working_dir}/taifu.flv"
+    end
+    private :remove_flv
 
     def script_base
 <<-SCRIPT
