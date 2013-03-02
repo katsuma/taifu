@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/katsuma/taifu.png?branch=master)](https://travis-ci.org/katsuma/taifu)
+
 # taifu
 taifu will bring YouTube sound to your iTunes library silently.
 
@@ -19,7 +21,7 @@ gem install taifu
 ```
 
 # Supported OS
-- OSX
+- OSX 10.8 (Mountain Lion)
 
 ## Dependencies
 - ffmpeg
