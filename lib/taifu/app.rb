@@ -5,43 +5,7 @@ module Taifu
 
     def initialize
       init_working_dir if check_env
-      @logger = Logger.new(STDOUT)
-    end
-
-    def init_working_dir
-      unless File.exist?(working_dir)
-        FileUtils.mkdir(working_dir)
-      end
-    end
-
-    def add_track
-      @logger.info 'Add wav file to iTunes'
-
-      script = create_script
-      `osascript #{script}`
-      delete_script
-
-      delete_wav
-      @logger.info "Done. Type 'taifu' on your iTunes"
-    end
-
-    def delete_wav
-      FileUtils.rm "#{working_dir}/taifu.wav"
-    end
-
-    def delete_script
-      FileUtils.rm "#{working_dir}/track.scpt"
-    end
-
-    def create_script
-      file_path = MacTypes::FileURL.path(File.expand_path("#{working_dir}/taifu.wav")).hfs_path
-      script_path = "#{working_dir}/track.scpt"
-
-      script = script_base.gsub('$file_path', file_path)
-      open(script_path, 'w') do |f|
-        f.write script
-      end
-      script_path
+      @logger = Logger.new("#{working_dir}/taifu.log")
     end
 
     def save_as_wav_with(youtube_url)
@@ -57,6 +21,22 @@ module Taifu
       remove_flv
 
       wav_path
+    end
+
+    def add_track(wav_path, clean_up: true)
+      @logger.info 'Add wav file to iTunes'
+
+      unless File.exist?(wav_path)
+        raise ArgumentError.new 'Not found wav file'
+      end
+
+      script_path = File.expand_path('./scripts/add_track.scpt')
+      expand_wav_path = File.expand_path(wav_path)
+      execute_script(script_path, expand_wav_path)
+
+      FileUtils.rm_f(wav_path) if clean_up
+
+      @logger.info "Done. Type 'taifu' on your iTunes"
     end
 
     def check_env
@@ -86,6 +66,13 @@ module Taifu
     end
     private :working_dir
 
+    def init_working_dir
+      unless File.exist?(working_dir)
+        FileUtils.mkdir(working_dir)
+      end
+    end
+    private :init_working_dir
+
     def download_from(url)
       system "youtube-dl -q #{url} -o #{working_dir}/taifu.flv"
     end
@@ -101,20 +88,9 @@ module Taifu
     end
     private :remove_flv
 
-    def script_base
-<<-SCRIPT
-tell application "iTunes"
-  set added_track to add "$file_path"
-  set loc to (get location of added_track)
-  convert added_track
-  delete added_track
-
-  tell application "Finder"
-    delete loc
-  end tell
-end tell
-SCRIPT
+    def execute_script(script, args)
+      `osascript #{script} #{args}`
     end
-    private :script_base
+    private :execute_script
   end
 end

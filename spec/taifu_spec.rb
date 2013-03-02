@@ -4,6 +4,7 @@ require 'taifu'
 
 describe Taifu do
   let(:url) { 'http://www.youtube.com/watch?v=I1X6MrBfjrk' }
+  let(:working_dir) { '/tmp/.taifu' }
 
   describe '#hit' do
     context 'with no arguments' do
@@ -51,14 +52,13 @@ describe Taifu do
       end
 
       context 'if required apps are installed' do
-        let(:working_dir) { '/tmp/.taifu' }
 
         before do
-          taifu.should_receive(:installed?).exactly(2).times.and_return(true)
-          taifu.should_receive(:working_dir).and_return(working_dir)
+          taifu.should_receive(:installed?).at_least(:twice).and_return(true)
         end
 
         it 'makes a working directory', fakefs: true do
+          taifu.should_receive(:working_dir).at_least(:twice).and_return(working_dir)
           subject
           File.should exist(working_dir)
         end
@@ -72,13 +72,9 @@ describe Taifu do
       end
 
       let(:load_url) { "#{url}&fature=endscreen" }
-      let(:working_dir) { '/tmp/.taifu' }
       let(:taifu) { Taifu::App.any_instance }
 
-      before do
-        taifu.should_receive(:installed?).exactly(2).times.and_return(true)
-        taifu.should_receive(:working_dir).at_least(:once).and_return(working_dir)
-      end
+      before { stub_constructor }
 
       it 'saves file as wav' do
         taifu.should_receive(:download_from).with(url)
@@ -86,7 +82,47 @@ describe Taifu do
         taifu.should_receive(:remove_flv)
         subject
       end
+    end
 
+    describe '#add_track' do
+      subject do
+        taifu = Taifu::App.new
+        taifu.add_track(wav_path)
+      end
+
+      let(:taifu) { Taifu::App.any_instance }
+      let(:wav_path) { '/tmp/.taifu.wav' }
+
+      before { stub_constructor }
+
+      context 'if wav file is not found' do
+        before do
+          FileUtils.rm_rf(wav_path)
+        end
+
+        it 'raises ArgumentError', fakefs: true do
+          expect { subject }.to raise_error(ArgumentError)
+        end
+      end
+
+      context 'if wav file is found' do
+        before do
+          FileUtils.touch(wav_path)
+        end
+
+        it 'converts wav file', fakefs: true do
+          taifu.should_receive(:execute_script)
+
+          File.should exist(wav_path)
+          subject
+          File.should_not exist(wav_path)
+        end
+      end
+    end
+
+    def stub_constructor
+      taifu.should_receive(:installed?).exactly(2).times.and_return(true)
+      taifu.should_receive(:working_dir).at_least(:once).and_return(working_dir)
     end
   end
 end
