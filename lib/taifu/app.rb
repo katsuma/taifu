@@ -23,7 +23,7 @@ module Taifu
       wav_path
     end
 
-    def add_track(wav_path, clean_up: true)
+    def add_track(wav_path, clean_up = true)
       @logger.info 'Add wav file to iTunes'
 
       unless File.exist?(wav_path)
