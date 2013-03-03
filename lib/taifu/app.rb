@@ -30,7 +30,7 @@ module Taifu
         raise ArgumentError.new 'Not found wav file'
       end
 
-      script_path = File.expand_path('./scripts/add_track.scpt')
+      script_path = File.expand_path("#{File.dirname(__FILE__)}/../../scripts/add_track.scpt")
       expand_wav_path = File.expand_path(wav_path)
       execute_script(script_path, expand_wav_path)
 
