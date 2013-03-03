@@ -6,7 +6,7 @@ taifu brings YouTube sound to your iTunes library silently.
 Try
 
 ```
-taifu http://www.youtube.com/watch?v=I1X6MrBfjrk
+taifu http://www.youtube.com/watch?v=your-video-id
 ```
 
 After that type `taifu` at search box on your iTunes.
@@ -31,6 +31,10 @@ gem install taifu
 - youtube-dl
 
 You can install these tools by homebrew.
+
+## Warning
+You can use this tool for only contents you have copyrights.
+
 
 ## Licence
 taifu is released under the MIT License.

@@ -8,7 +8,7 @@ module Taifu
   def hit
     url = ARGV.first
     if url.nil?
-      raise ArgumentError.new 'You need to specify URL. Try "taifu http://www.youtube.com/watch?v=I1X6MrBfjrk"'
+      raise ArgumentError.new 'You need to specify URL. Try "taifu http://www.youtube.com/watch?v=your-video-id"'
     end
 
     taifu = App.new
