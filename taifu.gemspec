@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["katsuma@gmail.com"]
   s.homepage    = "http://github.com/katsuma/taifu"
   s.summary     = %q{YouTube sound converter for iTunes}
-  s.description = %q{taifu will bring YouTube sound to your iTunes library silently}
+  s.description = %q{taifu brings YouTube sound to your iTunes library silently}
 
   s.rubyforge_project = "taifu"
 
