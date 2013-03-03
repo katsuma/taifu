@@ -33,4 +33,4 @@ gem install taifu
 You can install these tools by homebrew.
 
 ## Licence
-taifu is released into the public domain by the copyright holders.
+taifu is released under the MIT License.
