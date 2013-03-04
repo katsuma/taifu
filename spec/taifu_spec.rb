@@ -34,7 +34,6 @@ describe Taifu do
   end
 
   describe Taifu::App do
-
     describe '.new' do
       subject { Taifu::App.new }
 
@@ -55,12 +54,12 @@ describe Taifu do
 
         before do
           taifu.should_receive(:installed?).at_least(:twice).and_return(true)
+          FileUtils.rm_rf(working_dir)
         end
 
         it 'makes a working directory', fakefs: true do
           taifu.should_receive(:working_dir).at_least(:twice).and_return(working_dir)
-          subject
-          File.should exist(working_dir)
+          expect { subject }.to change { File.exist?(working_dir) }.from(false).to(true)
         end
       end
     end
@@ -112,10 +111,7 @@ describe Taifu do
 
         it 'converts wav file', fakefs: true do
           taifu.should_receive(:execute_script)
-
-          File.should exist(wav_path)
-          subject
-          File.should_not exist(wav_path)
+          expect { subject }.to change { File.exist?(wav_path) }.from(true).to(false)
         end
       end
     end
