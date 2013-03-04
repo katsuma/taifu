@@ -56,7 +56,7 @@ module Taifu
     private :check_env
 
     def installed?(app)
-      !`which #{app}`.empty?
+      !!(system "which #{app}")
     end
     private :installed?
 
@@ -89,7 +89,7 @@ module Taifu
     private :remove_flv
 
     def execute_script(script, args)
-      `osascript #{script} #{args}`
+      system "osascript #{script} #{args}"
     end
     private :execute_script
   end
