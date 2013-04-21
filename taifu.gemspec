@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "guard-rspec"
   s.add_development_dependency "growl"
   s.add_development_dependency "fakefs"
+  s.add_development_dependency "coveralls"
 end

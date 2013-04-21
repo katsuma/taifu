@@ -2,8 +2,10 @@
 
 require 'bundler'
 require 'fakefs/spec_helpers'
+require 'coveralls'
 
 Bundler.setup(:default, :development)
+Coveralls.wear!
 
 RSpec.configure do |config|
   config.color_enabled = true
