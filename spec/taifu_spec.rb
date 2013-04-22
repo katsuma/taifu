@@ -73,12 +73,12 @@ describe Taifu do
       let(:load_url) { "#{url}&fature=endscreen" }
       let(:taifu) { Taifu::App.any_instance }
 
-      before { stub_constructor }
+      before { stub_app_installed }
 
       it 'saves file as wav' do
-        taifu.should_receive(:download_from).with(url)
-        taifu.should_receive(:convert_flv_to).with("#{working_dir}/taifu.wav")
-        taifu.should_receive(:remove_flv)
+        taifu.should_receive(:system).with(/^youtube\-dl/)
+        taifu.should_receive(:system).with(/^ffmpeg/)
+        taifu.should_receive(:system).with(/^rm/)
         subject
       end
     end
@@ -92,7 +92,7 @@ describe Taifu do
       let(:taifu) { Taifu::App.any_instance }
       let(:wav_path) { '/tmp/.taifu.wav' }
 
-      before { stub_constructor }
+      before { stub_app_installed }
 
       context 'if wav file is not found' do
         before do
@@ -110,15 +110,14 @@ describe Taifu do
         end
 
         it 'converts wav file', fakefs: true do
-          taifu.should_receive(:execute_script)
+          taifu.should_receive(:system).with(/^osascript/)
           expect { subject }.to change { File.exist?(wav_path) }.from(true).to(false)
         end
       end
     end
 
-    def stub_constructor
-      taifu.should_receive(:installed?).exactly(2).times.and_return(true)
-      taifu.should_receive(:working_dir).at_least(:once).and_return(working_dir)
+    def stub_app_installed
+      taifu.should_receive(:system).with(/^which/).exactly(2).times.and_return(true)
     end
   end
 end
