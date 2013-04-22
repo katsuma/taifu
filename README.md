@@ -1,4 +1,4 @@
-# taifu [![Build Status](https://travis-ci.org/katsuma/taifu.png?branch=master)](https://travis-ci.org/katsuma/taifu)
+# taifu [![Build Status](https://travis-ci.org/katsuma/taifu.png?branch=master)](https://travis-ci.org/katsuma/taifu) [![Coverage Status](https://coveralls.io/repos/katsuma/taifu/badge.png?branch=master)](https://coveralls.io/r/katsuma/taifu)
 taifu brings YouTube sound to your iTunes library silently.
 
 ## Usage
