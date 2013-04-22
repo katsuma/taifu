@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "growl"
   s.add_development_dependency "fakefs"
   s.add_development_dependency "coveralls"
+  s.add_development_dependency "simplecov"
 end
