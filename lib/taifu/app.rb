@@ -10,15 +10,16 @@ module Taifu
 
     def save_as_wav_with(youtube_url)
       url = youtube_url.split('&').first
+      flv_path = "#{working_dir}/taifu.flv"
       wav_file = 'taifu.wav'
       wav_path = "#{working_dir}/#{wav_file}"
 
       @logger.info 'Download data'
-      download_from url
+      Util.save_flv_from_url(url, flv_path)
 
       @logger.info 'Save wav file'
-      convert_flv_to wav_path
-      remove_flv
+      Util.convert_flv_to_wav(flv_path, wav_path)
+      Util.remove_flv(flv_path)
 
       wav_path
     end
@@ -32,7 +33,7 @@ module Taifu
 
       script_path = File.expand_path("#{File.dirname(__FILE__)}/../../scripts/add_track.scpt")
       expand_wav_path = File.expand_path(wav_path)
-      execute_script(script_path, expand_wav_path)
+      Util.execute_apple_script(script_path, expand_wav_path)
 
       FileUtils.rm_f(wav_path) if clean_up
 
@@ -72,25 +73,5 @@ module Taifu
       end
     end
     private :init_working_dir
-
-    def download_from(url)
-      system "youtube-dl -q #{url} -o #{working_dir}/taifu.flv"
-    end
-    private :download_from
-
-    def convert_flv_to(wav)
-      system "ffmpeg -i #{working_dir}/taifu.flv #{wav} 2>/dev/null"
-    end
-    private :convert_flv_to
-
-    def remove_flv
-      system "rm -f #{working_dir}/taifu.flv"
-    end
-    private :remove_flv
-
-    def execute_script(script, args)
-      system "osascript #{script} #{args}"
-    end
-    private :execute_script
   end
 end

@@ -2,6 +2,7 @@
 require 'fileutils'
 require 'logger'
 require 'taifu/app'
+require 'taifu/util'
 require 'taifu/version'
 
 module Taifu

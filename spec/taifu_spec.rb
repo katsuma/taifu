@@ -5,6 +5,7 @@ require 'taifu'
 describe Taifu do
   let(:url) { 'http://www.youtube.com/watch?v=I1X6MrBfjrk' }
   let(:working_dir) { '/tmp/.taifu' }
+  let(:util) { Taifu::Util  }
 
   describe '#hit' do
     context 'with no arguments' do
@@ -76,9 +77,10 @@ describe Taifu do
       before { stub_app_installed }
 
       it 'saves file as wav' do
-        taifu.should_receive(:system).with(/^youtube\-dl/)
-        taifu.should_receive(:system).with(/^ffmpeg/)
-        taifu.should_receive(:system).with(/^rm/)
+        util.should_receive(:save_flv_from_url)
+        util.should_receive(:convert_flv_to_wav)
+        util.should_receive(:remove_flv)
+
         subject
       end
     end
@@ -110,7 +112,7 @@ describe Taifu do
         end
 
         it 'converts wav file', fakefs: true do
-          taifu.should_receive(:system).with(/^osascript/)
+          util.should_receive(:execute_apple_script)
           expect { subject }.to change { File.exist?(wav_path) }.from(true).to(false)
         end
       end
