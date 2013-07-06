@@ -79,14 +79,13 @@ describe Taifu do
       it 'saves file as wav' do
         util.should_receive(:save_flv_from_url)
         util.should_receive(:convert_flv_to_wav)
-        util.should_receive(:remove_flv)
 
         subject
       end
     end
 
     describe '#add_track' do
-      subject do
+      subject(:add_track) do
         taifu = Taifu::App.new
         taifu.add_track(wav_path)
       end
@@ -102,7 +101,7 @@ describe Taifu do
         end
 
         it 'raises ArgumentError', fakefs: true do
-          expect { subject }.to raise_error(ArgumentError)
+          expect { add_track }.to raise_error(ArgumentError)
         end
       end
 
@@ -111,9 +110,16 @@ describe Taifu do
           FileUtils.touch(wav_path)
         end
 
-        it 'converts wav file', fakefs: true do
-          util.should_receive(:execute_apple_script)
-          expect { subject }.to change { File.exist?(wav_path) }.from(true).to(false)
+        let(:track) { Itunes::Track.new }
+        let(:converted_track) { Itunes::Track.new }
+
+        it 'calls Itunes util methods', fakefs: true do
+          Itunes::Application.any_instance.stub(:add).with(wav_path).and_return(track)
+          track.should_receive(:convert).and_return(converted_track)
+          converted_track.should_receive(:update_attributes)
+          track.should_receive(:delete!)
+
+          add_track
         end
       end
     end

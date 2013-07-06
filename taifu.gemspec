@@ -19,13 +19,15 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.licenses = ["MIT"]
 
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "rb-fsevent"
-  s.add_development_dependency "guard"
-  s.add_development_dependency "guard-rspec"
-  s.add_development_dependency "growl"
-  s.add_development_dependency "fakefs"
-  s.add_development_dependency "coveralls"
-  s.add_development_dependency "simplecov"
+  s.add_development_dependency "rake", "~> 10.0.3"
+  s.add_development_dependency "rspec", "~> 2.13.0"
+  s.add_development_dependency "rb-fsevent", "~> 0.9.3"
+  s.add_development_dependency "guard", "~> 1.8.1"
+  s.add_development_dependency "guard-rspec", "~> 3.0.2"
+  s.add_development_dependency "growl", "~> 1.0.3"
+  s.add_development_dependency "fakefs", "~> 0.4.2"
+  s.add_development_dependency "coveralls", "~> 0.6.6"
+  s.add_development_dependency "simplecov", "~> 0.7.1"
+  s.add_development_dependency "pry", "~> 0.9.12.2"
+  s.add_dependency "itunes-client", "~> 0.0.6"
 end

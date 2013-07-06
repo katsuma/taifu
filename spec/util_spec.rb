@@ -25,25 +25,4 @@ describe Taifu::Util do
       convert_flv_to_wav
     end
   end
-
-  describe '.remove_flv' do
-    subject(:remove_flv) { util.remove_flv(flv_path) }
-    let(:flv_path) { '/tmp/foo.flv' }
-
-    it 'executes rm command' do
-      util.should_receive(:system).with("rm -f #{flv_path}")
-      remove_flv
-    end
-  end
-
-  describe '.execute_apple_script' do
-    subject(:execute_apple_script) { util.execute_apple_script(script_path, args) }
-    let(:script_path) { '/tmp/foo.scpt' }
-    let(:args) { 'bar' }
-
-    it 'executes osascript command' do
-      util.should_receive(:system).with("osascript #{script_path} #{args}")
-      execute_apple_script
-    end
-  end
 end
