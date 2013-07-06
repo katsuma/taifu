@@ -1,6 +1,7 @@
 # coding: utf-8
 require 'fileutils'
 require 'logger'
+require 'itunes-client'
 require 'taifu/app'
 require 'taifu/util'
 require 'taifu/version'
@@ -11,7 +12,6 @@ module Taifu
     if url.nil?
       raise ArgumentError.new 'You need to specify URL. Try "taifu http://www.youtube.com/watch?v=your-video-id"'
     end
-
     taifu = App.new
     wav_path = taifu.save_as_wav_with(url)
     taifu.add_track(wav_path)

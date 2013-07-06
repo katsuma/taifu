@@ -14,12 +14,14 @@ module Taifu
       wav_file = 'taifu.wav'
       wav_path = "#{working_dir}/#{wav_file}"
 
+      FileUtils.rm_f(wav_path) if File.exist?(wav_path)
+
       @logger.info 'Download data'
       Util.save_flv_from_url(url, flv_path)
 
       @logger.info 'Save wav file'
       Util.convert_flv_to_wav(flv_path, wav_path)
-      Util.remove_flv(flv_path)
+      FileUtils.rm_f(flv_path)
 
       wav_path
     end
@@ -31,12 +33,11 @@ module Taifu
         raise ArgumentError.new 'Not found wav file'
       end
 
-      script_path = File.expand_path("#{File.dirname(__FILE__)}/../../scripts/add_track.scpt")
-      expand_wav_path = File.expand_path(wav_path)
-      Util.execute_apple_script(script_path, expand_wav_path)
-
-      FileUtils.rm_f(wav_path) if clean_up
-
+      track = Itunes::Application.instance.add(wav_path)
+      converted_track = track.convert
+      converted_track.update_attributes(name: 'Taifu')
+      track.delete! if clean_up
+      FileUtils.rm_f(wav_path)
       @logger.info "Done. Type 'taifu' on your iTunes"
     end
 
