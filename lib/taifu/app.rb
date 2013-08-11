@@ -33,7 +33,7 @@ module Taifu
         raise ArgumentError.new 'Not found wav file'
       end
 
-      track = Itunes::Application.instance.add(wav_path)
+      track = Itunes::Player.add(wav_path)
       converted_track = track.convert
       converted_track.update_attributes(name: 'Taifu')
       track.delete! if clean_up
