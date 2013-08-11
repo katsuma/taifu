@@ -114,7 +114,7 @@ describe Taifu do
         let(:converted_track) { Itunes::Track.new }
 
         it 'calls Itunes util methods', fakefs: true do
-          Itunes::Application.any_instance.stub(:add).with(wav_path).and_return(track)
+          Itunes::Player.stub(:add).with(wav_path).and_return(track)
           track.should_receive(:convert).and_return(converted_track)
           converted_track.should_receive(:update_attributes)
           track.should_receive(:delete!)
