@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
 
   s.add_development_dependency "rake", "~> 10.0.3"
-  s.add_development_dependency "rspec", "~> 2.13.0"
+  s.add_development_dependency "rspec", "~> 2.99.0"
+  s.add_development_dependency "transpec"
   s.add_development_dependency "rb-fsevent", "~> 0.9.3"
   s.add_development_dependency "guard", "~> 1.8.1"
   s.add_development_dependency "guard-rspec", "~> 3.0.2"
