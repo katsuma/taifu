@@ -10,7 +10,7 @@ describe Taifu::Util do
     let(:url) { 'http://www.youtube.com/watch?v=foo' }
     let(:flv_path) { '/tmp/foo.flv' }
     it 'executes youtube_dl command' do
-      util.should_receive(:system).with("youtube-dl -q #{url} -o #{flv_path}")
+      expect(util).to receive(:system).with("youtube-dl -q #{url} -o #{flv_path}")
       save_flv_from_url
     end
   end
@@ -21,7 +21,7 @@ describe Taifu::Util do
     let(:wav_path) { '/tmp/foo.wav' }
 
     it 'executes ffmpeg command' do
-      util.should_receive(:system).with("ffmpeg -i #{flv_path} #{wav_path} 2>/dev/null")
+      expect(util).to receive(:system).with("ffmpeg -i #{flv_path} #{wav_path} 2>/dev/null")
       convert_flv_to_wav
     end
   end

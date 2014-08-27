@@ -10,7 +10,7 @@ describe Taifu do
   describe '#hit' do
     context 'with no arguments' do
       before do
-        ARGV.stub(:first).and_return(nil)
+        allow(ARGV).to receive(:first).and_return(nil)
       end
 
       it 'raises an ArgumentError' do
@@ -20,15 +20,15 @@ describe Taifu do
 
     context 'with an argument' do
       before do
-        ARGV.stub(:first).and_return(url)
+        allow(ARGV).to receive(:first).and_return(url)
       end
 
       it 'recieves Taifu::App.new' do
         taifu = double('taifu')
-        taifu.should_receive(:save_as_wav_with)
-        taifu.should_receive(:add_track)
+        expect(taifu).to receive(:save_as_wav_with)
+        expect(taifu).to receive(:add_track)
 
-        Taifu::App.should_receive(:new).and_return(taifu)
+        expect(Taifu::App).to receive(:new).and_return(taifu)
         Taifu.hit
       end
     end
@@ -43,7 +43,7 @@ describe Taifu do
 
       context "if required app is not installed" do
         before do
-          taifu.should_receive(:installed?).with(app).and_return(false)
+          expect_any_instance_of(Taifu::App).to receive(:installed?).with(app).and_return(false)
         end
 
         it 'raises an RuntimeError' do
@@ -54,12 +54,12 @@ describe Taifu do
       context 'if required apps are installed' do
 
         before do
-          taifu.should_receive(:installed?).at_least(:twice).and_return(true)
+          expect_any_instance_of(Taifu::App).to receive(:installed?).at_least(:twice).and_return(true)
           FileUtils.rm_rf(working_dir)
         end
 
         it 'makes a working directory', fakefs: true do
-          taifu.should_receive(:working_dir).at_least(:twice).and_return(working_dir)
+          expect_any_instance_of(Taifu::App).to receive(:working_dir).at_least(:twice).and_return(working_dir)
           expect { subject }.to change { File.exist?(working_dir) }.from(false).to(true)
         end
       end
@@ -77,8 +77,8 @@ describe Taifu do
       before { stub_app_installed }
 
       it 'saves file as wav' do
-        util.should_receive(:save_flv_from_url)
-        util.should_receive(:convert_flv_to_wav)
+        expect(util).to receive(:save_flv_from_url)
+        expect(util).to receive(:convert_flv_to_wav)
 
         subject
       end
@@ -114,10 +114,10 @@ describe Taifu do
         let(:converted_track) { Itunes::Track.new }
 
         it 'calls Itunes util methods', fakefs: true do
-          Itunes::Player.stub(:add).with(wav_path).and_return(track)
-          track.should_receive(:convert).and_return(converted_track)
-          converted_track.should_receive(:update_attributes)
-          track.should_receive(:delete!)
+          allow(Itunes::Player).to receive(:add).with(wav_path).and_return(track)
+          expect(track).to receive(:convert).and_return(converted_track)
+          expect(converted_track).to receive(:update_attributes)
+          expect(track).to receive(:delete!)
 
           add_track
         end
@@ -125,7 +125,7 @@ describe Taifu do
     end
 
     def stub_app_installed
-      taifu.should_receive(:system).with(/^which/).exactly(2).times.and_return(true)
+      expect_any_instance_of(Taifu::App).to receive(:system).with(/^which/).exactly(2).times.and_return(true)
     end
   end
 end
