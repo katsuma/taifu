@@ -20,15 +20,14 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
 
   s.add_development_dependency "rake", "~> 10.0.3"
-  s.add_development_dependency "rspec", "~> 2.99.0"
-  s.add_development_dependency "transpec"
-  s.add_development_dependency "rb-fsevent", "~> 0.9.3"
-  s.add_development_dependency "guard", "~> 1.8.1"
-  s.add_development_dependency "guard-rspec", "~> 3.0.2"
+  s.add_development_dependency "rspec", "~> 3.0.0"
+  s.add_development_dependency "rb-fsevent", "~> 0.9.4"
+  s.add_development_dependency "guard", "~> 2.6.1"
+  s.add_development_dependency "guard-rspec", "~> 4.3.1"
   s.add_development_dependency "growl", "~> 1.0.3"
-  s.add_development_dependency "fakefs", "~> 0.4.2"
-  s.add_development_dependency "coveralls", "~> 0.6.6"
-  s.add_development_dependency "simplecov", "~> 0.7.1"
-  s.add_development_dependency "pry", "~> 0.9.12.2"
+  s.add_development_dependency "fakefs", "~> 0.5.3"
+  s.add_development_dependency "coveralls", "~> 0.7.1"
+  s.add_development_dependency "simplecov", "~> 0.9.0"
+  s.add_development_dependency "pry", "~> 0.10.1"
   s.add_dependency "itunes-client", "~> 0.1.2"
 end
