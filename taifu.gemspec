@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.licenses = ["MIT"]
 
-  s.add_development_dependency "rake", "~> 10.0.3"
+  s.add_development_dependency "rake", "~> 10.3.2"
   s.add_development_dependency "rspec", "~> 3.0.0"
   s.add_development_dependency "rb-fsevent", "~> 0.9.4"
   s.add_development_dependency "guard", "~> 2.6.1"
