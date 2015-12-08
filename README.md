@@ -19,11 +19,15 @@ gem install taifu
 ```
 
 ## Supported OS
-- OSX 10.8 (Mountain Lion)
+
+- OSX El Capitan
+- OSX Yosemite
+- OSX Mavericks
 
 ## Supported Ruby
-- 2.0.0
-- 1.9.3
+- 2.2
+- 2.1
+- 2.0
 
 
 ## Dependencies
